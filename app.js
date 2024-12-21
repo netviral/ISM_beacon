@@ -8,26 +8,21 @@ const port = 3000;
 
 // MJPG Streamer setup
 let mjpgStreamer;
-
 function startMJPGStreamer() {
   mjpgStreamer = spawn('mjpg_streamer', [
-    '-i', '/usr/local/lib/mjpg-streamer/input_uvc.so -d /dev/video0 -r 640x480 -f 30',
+    '-i', '/usr/local/lib/mjpg-streamer/input_uvc.so -d /dev/video0 -r 640x480 -f 30 -n',
     '-o', '/usr/local/lib/mjpg-streamer/output_http.so -p 8080 -w /usr/local/www',
   ]);
 
-  mjpgStreamer.stdout.on('data', (data) => {
-    console.log(`MJPG Streamer: ${data}`);
-  });
-
-  mjpgStreamer.stderr.on('data', (data) => {
-    console.error(`MJPG Streamer Error: ${data}`);
-  });
+  mjpgStreamer.stdout.on('data', (data) => console.log(`MJPG Streamer: ${data}`));
+  mjpgStreamer.stderr.on('data', (data) => console.error(`MJPG Streamer Error: ${data}`));
 
   mjpgStreamer.on('close', (code) => {
     console.log(`MJPG Streamer exited with code ${code}`);
-    mjpgStreamer = null; // Reset the reference when the process exits
+    mjpgStreamer = null;
   });
 }
+
 
 // Stop MJPG Streamer if running
 function stopMJPGStreamer() {
