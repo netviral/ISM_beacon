@@ -35,6 +35,8 @@ function stopMJPGStreamer() {
 // Serve static files (e.g., CSS)
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 // Route to serve the HTML page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
